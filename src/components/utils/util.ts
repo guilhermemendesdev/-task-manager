@@ -9,6 +9,13 @@ class Util {
     };
   }
 
+  duplicate(error: any): any {
+    return {
+      message: error.message,
+      status: 409,
+    };
+  }
+
   getAll(result: any): any {
     return {
       result,
