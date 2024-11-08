@@ -9,4 +9,15 @@ DeveloperRouter.route("/insert-developer").post(
   DeveloperController.insertDeveloper
 );
 
+DeveloperRouter.route("/get-developers").get(DeveloperController.getAllDevelopers);
+
+DeveloperRouter.route("/get-developer/:id_developer").get(
+  DeveloperMiddleware.valideDeveloperById,
+  DeveloperController.getDeveloperById
+);
+
+DeveloperRouter.route("/session-developer/login").post(
+  DeveloperMiddleware.valideLoginDeveloper,
+  DeveloperController.loginDeveloper
+);
 export default DeveloperRouter;
