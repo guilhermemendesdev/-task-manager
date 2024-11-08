@@ -11,7 +11,7 @@ DeveloperRouter.route("/insert-developer").post(
 
 DeveloperRouter.route("/get-developers").get(DeveloperController.getAllDevelopers);
 
-DeveloperRouter.route("/get-developer/:id_developer").get(
+DeveloperRouter.route("/get-developer/:idDeveloper").get(
   DeveloperMiddleware.valideDeveloperById,
   DeveloperController.getDeveloperById
 );
@@ -19,5 +19,10 @@ DeveloperRouter.route("/get-developer/:id_developer").get(
 DeveloperRouter.route("/session-developer/login").post(
   DeveloperMiddleware.valideLoginDeveloper,
   DeveloperController.loginDeveloper
+);
+
+DeveloperRouter.route("/session-developer/update-password").patch(
+  DeveloperMiddleware.valideUpdatePasswordDeveloper,
+  DeveloperController.updatePasswordDeveloper
 );
 export default DeveloperRouter;

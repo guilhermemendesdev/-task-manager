@@ -30,7 +30,7 @@ class DeveloperService {
 
       return Util.create(createDeveloper, "Developer registered successfully");
     } catch (error) {
-      throw error;
+      return Util.serverError(error);
     }
   }
 
@@ -40,17 +40,17 @@ class DeveloperService {
 
       return Util.getAll(developers);
     } catch (error) {
-      throw error;
+      return Util.serverError(error);
     }
   }
 
-  async getDeveloperById(id_developer: string): Promise<ResponseDeveloperById> {
+  async getDeveloperById(idDeveloper: string): Promise<ResponseDeveloperById> {
     try {
-      const developers = await DeveloperSchema.findById(id_developer);
+      const developers = await DeveloperSchema.findById(idDeveloper);
 
       return Util.getAll(developers);
     } catch (error) {
-      throw error;
+      return Util.serverError(error);
     }
   }
 
@@ -77,7 +77,34 @@ class DeveloperService {
         token
       );
     } catch (error) {
-      throw error;
+      return Util.serverError(error);
+    }
+  }
+
+  async updatePasswordDeveloper(newPassword: string, idDeveloper: string): Promise<any> {
+    try {
+      const newPasswordHashed = await Bcrypt.hash(newPassword, 10);
+
+      const developer = await DeveloperSchema.findByIdAndUpdate(idDeveloper, {
+        password: newPasswordHashed,
+      });
+
+      const token = sign({}, "765b910f4c8564db18281f997b7cc926", {
+        subject: `${developer._id}`,
+        expiresIn: "1d",
+      });
+
+      return Util.login(
+        {
+          name: developer.name,
+          cpf: developer.cpf,
+          email: developer.email,
+          active: developer.active,
+        },
+        token
+      );
+    } catch (error) {
+      return Util.serverError(error);
     }
   }
 }

@@ -23,13 +23,13 @@ class DeveloperMiddleware {
   };
 
   valideDeveloperById = (req: Request, res: Response, next: NextFunction) => {
-    const { id_developer } = req.params;
+    const { idDeveloper } = req.params;
 
     // Validation of required fields
-    if (!id_developer) {
+    if (!idDeveloper) {
       return res.status(BAD_REQUEST).send({
         error_code: "INVALID_DATA",
-        error_description: `the {id_developer} param is required`,
+        error_description: `the {idDeveloper} param is required`,
       });
     }
     next();
@@ -50,6 +50,41 @@ class DeveloperMiddleware {
       return res.status(BAD_REQUEST).send({
         error_code: "INVALID_DATA",
         error_description: `the {password} field is required`,
+      });
+    }
+    next();
+  };
+
+  valideUpdatePasswordDeveloper = (req: Request, res: Response, next: NextFunction) => {
+    const { newPassword, confirmNewPassword } = req.body;
+    const { idDeveloper } = req.params;
+
+    // Validation of required fields
+    if (!newPassword) {
+      return res.status(BAD_REQUEST).send({
+        error_code: "INVALID_DATA",
+        error_description: `the {newPassword} field is required`,
+      });
+    }
+
+    if (!confirmNewPassword) {
+      return res.status(BAD_REQUEST).send({
+        error_code: "INVALID_DATA",
+        error_description: `the {newPassword} field is required`,
+      });
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      return res.status(BAD_REQUEST).send({
+        error_code: "INVALID_DATA",
+        error_description: `the {newPassword} and {confirmNewPassword} fields must be the same`,
+      });
+    }
+
+    if (!idDeveloper) {
+      return res.status(BAD_REQUEST).send({
+        error_code: "INVALID_DATA",
+        error_description: `the {idDeveloper} param is required`,
       });
     }
     next();

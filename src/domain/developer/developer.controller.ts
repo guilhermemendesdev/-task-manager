@@ -27,8 +27,8 @@ class DeveloperController {
 
   async getDeveloperById(req: Request, res: Response) {
     try {
-      const { id_developer } = req.params;
-      const { status, result } = await DeveloperService.getDeveloperById(id_developer);
+      const { idDeveloper } = req.params;
+      const { status, result } = await DeveloperService.getDeveloperById(idDeveloper);
       return res.status(status).send(result);
     } catch (error) {
       return res.status(error.status).send(error.message);
@@ -39,6 +39,18 @@ class DeveloperController {
     try {
       const { email, password } = req.body;
       const { status, result, token } = await DeveloperService.loginDeveloper(email, password);
+
+      return res.status(status).send({ result, token });
+    } catch (error) {
+      return res.status(error.status).send(error.message);
+    }
+  }
+
+  async updatePasswordDeveloper(req: Request, res: Response) {
+    try {
+      const { newPassword } = req.body;
+      const { idDeveloper } = req.params;
+      const { status, result, token } = await DeveloperService.updatePasswordDeveloper(newPassword, idDeveloper);
 
       return res.status(status).send({ result, token });
     } catch (error) {
